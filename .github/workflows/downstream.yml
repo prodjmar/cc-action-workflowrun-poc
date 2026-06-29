@@ -13,13 +13,12 @@ jobs:
     steps:
       - name: actor_plumbing
         run: |
-          echo "github.actor                       = ${{ github.actor }}"
-          echo "github.triggering_actor            = ${{ github.triggering_actor }}"
-          echo "event.workflow_run.actor.login     = ${{ github.event.workflow_run.actor.login }}"
-          echo "event.workflow_run.triggering_actor= ${{ github.event.workflow_run.triggering_actor.login }}"
-          echo "event.workflow_run.event           = ${{ github.event.workflow_run.event }}"
+          echo "github.actor                   = ${{ github.actor }}"
+          echo "event.workflow_run.actor.login = ${{ github.event.workflow_run.actor.login }}"
+          echo "event.workflow_run.event       = ${{ github.event.workflow_run.event }}"
       - uses: actions/checkout@v4
       - uses: anthropics/claude-code-action@main
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: "Say hello in one short sentence. Do not use any tools."
