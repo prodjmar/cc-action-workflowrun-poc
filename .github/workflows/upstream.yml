@@ -1,0 +1,9 @@
+name: upstream
+on:
+  issues:
+    types: [opened]
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "upstream ran, triggered by ${{ github.actor }}"

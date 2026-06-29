@@ -1,0 +1,25 @@
+name: downstream
+on:
+  workflow_run:
+    workflows: [upstream]
+    types: [completed]
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+jobs:
+  claude:
+    runs-on: ubuntu-latest
+    steps:
+      - name: actor_plumbing
+        run: |
+          echo "github.actor                       = ${{ github.actor }}"
+          echo "github.triggering_actor            = ${{ github.triggering_actor }}"
+          echo "event.workflow_run.actor.login     = ${{ github.event.workflow_run.actor.login }}"
+          echo "event.workflow_run.triggering_actor= ${{ github.event.workflow_run.triggering_actor.login }}"
+          echo "event.workflow_run.event           = ${{ github.event.workflow_run.event }}"
+      - uses: actions/checkout@v4
+      - uses: anthropics/claude-code-action@main
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: "Say hello in one short sentence. Do not use any tools."
