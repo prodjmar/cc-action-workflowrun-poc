@@ -18,7 +18,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          claude_args: '--allowedTools "Bash,Write,Edit"'
+          claude_args: "--allowedTools \"Bash,Write,Edit\""
+          show_full_output: "true"
           prompt: |
             Create a file named UNPRIV_WRITE_PROOF.txt at the repository root.
             Its contents must be exactly: claude-code-action performed a repo write on behalf of a NON-WRITE user via workflow_run
