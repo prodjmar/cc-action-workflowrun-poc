@@ -12,13 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: actor_plumbing
-        run: |
-          echo "github.actor                   = ${{ github.actor }}"
-          echo "event.workflow_run.actor.login = ${{ github.event.workflow_run.actor.login }}"
-          echo "event.workflow_run.event       = ${{ github.event.workflow_run.event }}"
+        run: echo "actor=${{ github.actor }}  wf_run.actor=${{ github.event.workflow_run.actor.login }}  upstream_event=${{ github.event.workflow_run.event }}"
       - uses: actions/checkout@v4
       - uses: anthropics/claude-code-action@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          prompt: "Say hello in one short sentence. Do not use any tools."
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: '--allowedTools "Bash,Write,Edit"'
+          prompt: |
+            Create a file named UNPRIV_WRITE_PROOF.txt at the repository root.
+            Its contents must be exactly: claude-code-action performed a repo write on behalf of a NON-WRITE user via workflow_run
+            Then commit it (message: "proof: unprivileged workflow_run write") and push it to the main branch using git.
